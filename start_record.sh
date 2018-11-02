@@ -2,8 +2,6 @@
 
 # Start record from h264 ipcam
 
-
-
 FFMPEG=`which ffmpeg`
 STREAM=$1
 DEST_DIR=$2
@@ -12,7 +10,7 @@ FFMPEG_PID_FILE="$FFMPEG_PID_FILE_BASE$3"
 CLIP_LEN='10m'
 AUDIO_CODEC='copy'
 VIDEO_CODEC='copy'
-DEBUG='true'
+DEBUG='false'
 
 if [ $# != 3 ]  # check if any argument exist
    then         # show help
@@ -46,8 +44,8 @@ if [ $DEBUG == 'true' ]
   then
     echo "Start record"
     echo ""
-    #LOGLEVEL='info'
-    LOGLEVEL='quiet'
+    LOGLEVEL='info'
+    #LOGLEVEL='quiet'
   else
     LOGLEVEL='quiet'
 fi
