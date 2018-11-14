@@ -3,22 +3,22 @@
 # End record from h264 ipcam
 
 FFMPEG_PID_FILE_BASE='/tmp/ffmpeg_pid_'
-FFMPEG_PID_FILE="$FFMPEG_PID_FILE_BASE$1"
+FFMPEG_PID_FILE="$FFMPEG_PID_FILE_BASE$1$2"
 FFMPEG_PID=$(cat $FFMPEG_PID_FILE)
 
 CONTROL_PID_FILE_BASE='/tmp/ffmpeg_control_pid_'
-CONTROL_PID_FILE="$CONTROL_PID_FILE_BASE$1"
+CONTROL_PID_FILE="$CONTROL_PID_FILE_BASE$1$2"
 CONTROL_PID=$(cat $CONTROL_PID_FILE)
 
 DEBUG='true'
 
-if [ $# != 1 ]  # check if any argument exist
+if [ $# != 2 ]  # check if any argument exist
    then         # show help
         echo "No arguments"
         echo
-        echo "Usage: cam_id"
+        echo "Usage: cam_id event_id"
         echo "Example:"
-        echo "       $0 dahua123"
+        echo "       $0 dahua123 42"
         echo
         exit 1
 fi
@@ -30,10 +30,11 @@ if [ $DEBUG == 'true' ]
     echo "----------------------------"
     echo ""
     echo "Cameta ID - $1"
+    echo "Event ID - $2"
     echo ""
 fi
 
-kill $FFMPEG_PID
+kill -2 $FFMPEG_PID
 kill $CONTROL_PID
 
 rm $FFMPEG_PID_FILE

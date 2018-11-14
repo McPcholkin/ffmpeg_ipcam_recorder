@@ -30,7 +30,7 @@ fi
 
 #kill $FFMPEG_PID
 
-rm $FFMPEG_PID_FILE
+rm -2 $FFMPEG_PID_FILE
 
 if [ $DEBUG == 'true' ]
   then

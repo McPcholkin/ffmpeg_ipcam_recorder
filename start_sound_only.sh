@@ -10,24 +10,25 @@ FILE_NAME=${DEST_VID_FILE%.$VIDEO_EXT}
 AUDIO_EXT='mp3'
 DEST_AUDIO_FILE="$FILE_NAME.$AUDIO_EXT"
 CAM_ID=$3
+EVENT_ID=$4
 FFMPEG_PID_FILE_BASE='/tmp/ffmpeg_pid_'
-FFMPEG_PID_FILE="$FFMPEG_PID_FILE_BASE$3"
+FFMPEG_PID_FILE="$FFMPEG_PID_FILE_BASE$CAM_ID$EVENT_ID"
 
 CONTROL_PID_FILE_BASE='/tmp/ffmpeg_control_pid_'
-CONTROL_PID_FILE="$CONTROL_PID_FILE_BASE$3"
+CONTROL_PID_FILE="$CONTROL_PID_FILE_BASE$CAM_ID$EVENT_ID"
 
-CLIP_LEN='10m'
+CLIP_LEN='600'
 AUDIO_CHAN='1'
 AUDIO_RATE='44100'
 DEBUG='true'
 
-if [ $# != 3 ]  # check if any argument exist
+if [ $# != 4 ]  # check if any argument exist
    then         # show help
         echo "No arguments"
         echo
-        echo "Usage: audio_device dest_video_file cam_id"
+        echo "Usage: audio_device dest_video_file cam_id event_id"
         echo "Example:"
-        echo "       $0 'default:CARD=U0x46d0x8b5' /srv/motion/cam1/capture.avi orb_cam"
+        echo "       $0 'default:CARD=U0x46d0x8b5' /srv/motion/cam1/capture.avi orb_cam 42"
         echo
         exit 1
 fi
@@ -44,6 +45,7 @@ if [ $DEBUG == 'true' ]
     echo "Video file ext - $VIDEO_EXT"
     echo "Destenation audio_file - $DEST_AUDIO_FILE"
     echo "Cameta ID - $CAM_ID"
+    echo "Event ID - $EVENT_ID"
     echo ""
 fi
 
@@ -58,7 +60,7 @@ if [ $DEBUG == 'true' ]
 fi
  
 function ffmpeg_run { 
-  $FFMPEG -loglevel $LOGLEVEL -f alsa -ac $AUDIO_CHAN -ar $AUDIO_RATE -i $AUDIO_DEV $DEST_AUDIO_FILE & FFMPEG_PID=$!
+  $FFMPEG -loglevel $LOGLEVEL -f alsa -ac $AUDIO_CHAN -ar $AUDIO_RATE -i $AUDIO_DEV -t $CLIP_LEN $DEST_AUDIO_FILE & FFMPEG_PID=$!
 }
 
 
